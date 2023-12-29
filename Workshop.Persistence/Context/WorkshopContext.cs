@@ -8,9 +8,9 @@ using WorkshopMng.Domain.Domains;
 
 namespace WorkshopMng.Persistence.Context
 {
-    public class WorkshopMngContext : DbContext
+    public class WorkshopContext : DbContext
     {
-        public WorkshopMngContext(DbContextOptions op) : base(op)
+        public WorkshopContext(DbContextOptions op) : base(op)
         {
             
         }
