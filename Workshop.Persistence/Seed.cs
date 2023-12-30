@@ -25,10 +25,10 @@ namespace WorkshopMng.Persistence
             await context.SaveChangesAsync();
 
             // Adiciona Workshops
-            var workshops = new List<Workshop>
+            var workshops = new List<WorkshopMng.Domain.Domains.Workshop>
             {
-                new Workshop { Nome = "Workshop 1", DataRealizacao = DateTime.Now.AddDays(7), Descricao = "Descrição do Workshop 1" },
-                new Workshop { Nome = "Workshop 2", DataRealizacao = DateTime.Now.AddDays(14), Descricao = "Descrição do Workshop 2" },
+                new WorkshopMng.Domain.Domains.Workshop { Nome = "Workshop 1", DataRealizacao = DateTime.Now.AddDays(7), Descricao = "Descrição do Workshop 1" },
+                new WorkshopMng.Domain.Domains.Workshop { Nome = "Workshop 2", DataRealizacao = DateTime.Now.AddDays(14), Descricao = "Descrição do Workshop 2" },
             };
             context.Workshops.AddRange(workshops);
             await context.SaveChangesAsync();
