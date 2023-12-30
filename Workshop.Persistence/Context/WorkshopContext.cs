@@ -16,7 +16,7 @@ namespace WorkshopMng.Persistence.Context
         }
 
         public DbSet<Colaborador> Colaboradores { get; set; }
-        public DbSet<Workshop> Workshops { get; set; }
+        public DbSet<WorkshopMng.Domain.Domains.Workshop> Workshops { get; set; }
         public DbSet<Ata> Atas { get; set; }
     }
 }
