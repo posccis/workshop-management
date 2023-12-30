@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using WorkshopMng.Domain.Domains;
 using WorkshopMng.Persistence.Context;
 
-namespace Workshop.API.Controllers
+namespace WorkshopMng.API.Controllers
 {
     [ApiController]
-    [Route("api/[Controller]")]
+    [Route("api/colaboradores")]
     public class ColaboradorController : ControllerBase
     {
         private readonly WorkshopContext _context;
