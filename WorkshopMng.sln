@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workshop.Domain", "Workshop.Domain\Workshop.Domain.csproj", "{9AEEC4FC-733B-4C2A-8972-8EE37865D5B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workshop.Domain", "Workshop.Domain\Workshop.Domain.csproj", "{9AEEC4FC-733B-4C2A-8972-8EE37865D5B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workshop.Persistence", "Workshop.Persistence\Workshop.Persistence.csproj", "{58F1285C-6827-45C0-8E15-1EBD3D1EFD2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workshop.Persistence", "Workshop.Persistence\Workshop.Persistence.csproj", "{58F1285C-6827-45C0-8E15-1EBD3D1EFD2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workshop.Application", "Workshop.Application\Workshop.Application.csproj", "{23AD7582-51E4-44FB-8A1B-073151EDA33D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workshop.Application", "Workshop.Application\Workshop.Application.csproj", "{23AD7582-51E4-44FB-8A1B-073151EDA33D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workshop.API", "Workshop.API\Workshop.API.csproj", "{26B2AF41-A249-46C8-86F0-C43F68B97A49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workshop.API", "Workshop.API\Workshop.API.csproj", "{26B2AF41-A249-46C8-86F0-C43F68B97A49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
