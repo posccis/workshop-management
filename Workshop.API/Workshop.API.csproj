@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Workshop.Application\Workshop.Application.csproj" />
     <ProjectReference Include="..\Workshop.Domain\Workshop.Domain.csproj" />
     <ProjectReference Include="..\Workshop.Persistence\Workshop.Persistence.csproj" />
   </ItemGroup>

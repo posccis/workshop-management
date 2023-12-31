@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
+using Workshop.Domain.Exceptions;
+using WorkshopMng.Application.Interfaces;
 using WorkshopMng.Domain.Domains;
-using WorkshopMng.Persistence.Context;
 
 namespace Workshop.API.Controllers
 {
@@ -10,62 +9,113 @@ namespace Workshop.API.Controllers
     [Route("api/atas")]
     public class AtaController : ControllerBase
     {
-        private readonly WorkshopContext _context;
+        private readonly IAtaService<Ata> _ataService;
+        private readonly IColaboradorService<Colaborador> _colaboradorService;
 
-        public AtaController(WorkshopContext context)
+        public AtaController(IAtaService<Ata> ataService, IColaboradorService<Colaborador> colaboradorService)
         {
-            _context = context;
+            _ataService = ataService;
+            _colaboradorService = colaboradorService;
+
         }
 
         [HttpPost]
-        public async Task<IActionResult> CriarAta(Ata ata) 
-        { 
-            await _context.Atas.AddAsync(ata);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetAta), new { id = ata.Id }, ata);
-        }
-
-        [HttpPut("{colaboradorId}/workshops/{workshopId}")]
-        public async Task<IActionResult> AdicionarColaborador(int colaboradorId, int workshopId) 
-        { 
-            var colaborador = await _context.Colaboradores.FirstOrDefaultAsync(col => col.Id == colaboradorId);
-            var ata = await _context.Atas.Include(a => a.colaboradores).FirstOrDefaultAsync(ata => ata.Workshop.Id == workshopId);
-            ata.colaboradores.Add(colaborador);
-            _context.Atas.Update(ata);
-            await _context.SaveChangesAsync();
-            return Ok(ata);
-        }
-
-        [HttpDelete("{colaboradorId}/workshops/{workshopId}")]
-        public async Task<IActionResult> RemoverColaborador(int colaboradorId, int workshopId) 
-        { 
-            var colaborador = await _context.Colaboradores.FirstOrDefaultAsync(col => col.Id == colaboradorId);
-            var ata = await _context.Atas.Include(a => a.colaboradores).FirstOrDefaultAsync(ata => ata.Workshop.Id == workshopId);
-            ata.colaboradores.Remove(colaborador);
-            _context.Atas.Update(ata);
-            await _context.SaveChangesAsync();
-            return Ok(ata);
-        }
-
-        [HttpGet("{id}", Name = "GetAta")]
-        public async Task<IActionResult> GetAta(int id)
+        public async Task<IActionResult> CriarAta(Ata ata)
         {
-            var ata = await _context.Atas.FindAsync(id);
-
-            if (ata == null)
+            try
             {
-                return NotFound();
+                await _ataService.InserirAta(ata);
+                return CreatedAtAction(nameof(_ataService.ObterAtaPorId), new { id = ata.Id }, ata);
+            }
+            catch (ServiceException serviceExp)
+            {
+                return BadRequest(serviceExp.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            return Ok(ata);
         }
 
-        [HttpGet("{workshopNome}")]
-        public async Task<IActionResult> ObterAtaPorWorkshop(string workshopNome)
+        [HttpPut("{colaboradorId}/{ataId}")]
+        public async Task<IActionResult> AdicionarColaborador(int colaboradorId, int ataId) 
         {
-            var ata = await _context.Atas.Include(a => a.colaboradores).FirstOrDefaultAsync(ata => ata.Workshop.Nome == workshopNome);
+            try
+            {
+                var colaborador = await _colaboradorService.ObterColaboradorPorId(colaboradorId);
 
-            return Ok(ata.colaboradores);
+                _ataService.InserirColaboradorNaAta(colaborador, ataId);
+                var ata = await _ataService.ObterAtaPorId(ataId);
+                return Ok(ata);
+            }
+            catch (ServiceException serviceExp) 
+            { 
+                return BadRequest(serviceExp.Message);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpDelete("{colaboradorId}/{ataId}")]
+        public async Task<IActionResult> RemoverColaborador(int colaboradorId, int ataId) 
+        {
+            try
+            {
+                var colaborador = await _colaboradorService.ObterColaboradorPorId(colaboradorId);
+                _ataService.RemoverColaboradorDaAta(colaborador, ataId);
+
+                var ata = await _ataService.ObterAtaPorId(ataId);
+                return Ok(ata);
+            }
+            catch (ServiceException serviceExp)
+            {
+                return BadRequest(serviceExp.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetAtaPorId(int id)
+        {
+            try
+            {
+                var ata = await _ataService.ObterAtaPorId(id);
+                return Ok(ata);
+            }
+            catch (ServiceException serviceExp)
+            {
+                return NotFound(serviceExp.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("workshops/{workshopNome}")]
+        public async Task<ActionResult<IEnumerable<Colaborador>>> ObterColaboradoresPorWorkshop(string workshopNome)
+        {
+            try
+            {
+                return Ok(_ataService.RetornaColaboradoresPorWorkshop(workshopNome));
+            }
+            catch (ServiceException serviceExp)
+            {
+                return NotFound(serviceExp.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

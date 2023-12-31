@@ -1,4 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using WorkshopMng.Application.Interfaces;
+using WorkshopMng.Application.Services;
+using WorkshopMng.Domain.Domains;
 using WorkshopMng.Persistence;
 using WorkshopMng.Persistence.Context;
 
@@ -16,7 +19,9 @@ builder.Services.AddDbContext<WorkshopContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-
+builder.Services.AddScoped<IAtaService<Ata>, AtaService>();
+builder.Services.AddScoped<IColaboradorService<Colaborador>, ColaboradorService>();
+builder.Services.AddScoped<IWorkshopService<WorkshopMng.Domain.Domains.Workshop>, WorkshopService>();
 
 var app = builder.Build();
 

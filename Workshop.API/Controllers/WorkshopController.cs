@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Workshop.Domain.Exceptions;
+using WorkshopMng.Application.Interfaces;
+using WorkshopMng.Application.Services;
 using WorkshopMng.Domain.Domains;
 using WorkshopMng.Persistence.Context;
 
@@ -8,32 +11,47 @@ namespace WorkshopMng.API.Controllers
     [Route("api/workshops")]
     public class WorkshopController : ControllerBase
     {
-        private readonly WorkshopContext _context;
+        private readonly IWorkshopService<Domain.Domains.Workshop> _workshopService;
 
-        public WorkshopController(WorkshopContext context)
+        public WorkshopController(IWorkshopService<Domain.Domains.Workshop> workshopService)
         {
-            _context = context;
+            _workshopService = workshopService;
         }
 
         [HttpPost]
         public async Task<IActionResult> CriarWorkshop(WorkshopMng.Domain.Domains.Workshop workshop) 
-        { 
-            await _context.Workshops.AddAsync(workshop);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetWorkshop), new { id = workshop.Id }, workshop);
+        {
+            try
+            {
+                await _workshopService.InserirWorkshop(workshop);
+                return CreatedAtAction(nameof(_workshopService.ObterWorkshopPorId), new { id = workshop.Id }, workshop);
+            }
+            catch (ServiceException serviceExp)
+            {
+                return BadRequest(serviceExp.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpGet("{id}", Name = "GetWorkshop")]
-        public async Task<IActionResult> GetWorkshop(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetWorkshopPorId(int id)
         {
-            var workshop = await _context.Workshops.FindAsync(id);
-
-            if (workshop == null)
+            try
             {
-                return NotFound();
+                var workshop = await _workshopService.ObterWorkshopPorId(id);
+                return Ok(workshop);
             }
-
-            return Ok(workshop);
+            catch (ServiceException serviceExp)
+            {
+                return NotFound(serviceExp.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
