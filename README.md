@@ -19,8 +19,30 @@ iniciativas.ados por espaço.
 
 ## Overview
 A plataforma envolve uma API Rest desenvolvida em .Net que é dividida em 3 camadas:
-- Dominio
-- Persistencia
-- Aplicação
-- API<br>
-E além da API, também possui uma aplicação front-end em Angular.
+- Dominio🌐
+- Persistencia🎲
+- Aplicação📈
+- API 🛜
+
+Além disso, também possui uma aplicação Angular responsável pela camada de visualização com duas telas:
+- Atas 📝
+- Dashboards 📊
+
+___
+
+## Como utilizar
+
+Primeiro nós precisamos executar nossa API e nosso banco de dados SQL Server:
+- após executar o ```git clone```, dentro da pasta da Solution execute:
+```
+  docker-compose up
+```
+
+- Abra outro terminal e execute cada um dos 3 comandos e um de cada vez:
+  ```
+  cd workshop-app
+  npm install
+  ng serve
+  ```
+- Perfeito! Agora nós temos nosso gerenciador de Workshops funcionando!
+  
