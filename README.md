@@ -18,7 +18,7 @@ proporcionando insights valiosos para o aprimoramento contínuo de nossas
 iniciativas.ados por espaço.
 
 ## Overview
-A plataforma envolve uma API Rest desenvolvida em .Net que é dividida em 3 camadas:
+A plataforma envolve uma API Rest desenvolvida em .Net que é dividida em 4 camadas:
 - Dominio🌐
 - Persistencia🎲
 - Aplicação📈
