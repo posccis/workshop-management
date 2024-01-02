@@ -44,5 +44,5 @@ Primeiro nós precisamos executar nossa API e nosso banco de dados SQL Server:
   npm install
   ng serve
   ```
-- Perfeito! Agora nós temos nosso gerenciador de Workshops funcionando!
+- Perfeito! Agora, acessando a url http//localhost:4200 é possivel visualizar nosso gerenciador  de Workshops!
   
