@@ -24,7 +24,7 @@ namespace WorkshopMng.API.Controllers
             try
             {
                 await _workshopService.InserirWorkshop(workshop);
-                return CreatedAtAction(nameof(_workshopService.ObterWorkshopPorId), new { id = workshop.Id }, workshop);
+                return CreatedAtAction(nameof(GetWorkshopPorId), new { id = workshop.Id }, workshop);
             }
             catch (ServiceException serviceExp)
             {

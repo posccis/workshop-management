@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workshop.Application", "Wor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workshop.API", "Workshop.API\Workshop.API.csproj", "{26B2AF41-A249-46C8-86F0-C43F68B97A49}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{157E9D9C-D1FA-4BDE-BB2F-4A0592DE852E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{26B2AF41-A249-46C8-86F0-C43F68B97A49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26B2AF41-A249-46C8-86F0-C43F68B97A49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26B2AF41-A249-46C8-86F0-C43F68B97A49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{157E9D9C-D1FA-4BDE-BB2F-4A0592DE852E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{157E9D9C-D1FA-4BDE-BB2F-4A0592DE852E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{157E9D9C-D1FA-4BDE-BB2F-4A0592DE852E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{157E9D9C-D1FA-4BDE-BB2F-4A0592DE852E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

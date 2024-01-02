@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  workshop.api:
+    image: ${DOCKER_REGISTRY-}workshopapi
+    build:
+      context: .
+      dockerfile: Workshop.API/Dockerfile
+    command: dotnet run
+    
+  sqlserver:
+     image: mcr.microsoft.com/mssql/server:2019-latest
+     hostname: 'workshop_sqlserver'
+     environment:
+        ACCEPT_EULA: 'Y'
+        SA_PASSWORD: "admin_pass123"
+     ports:
+        - '11433:1433'
+     expose:
+        - 1433 
+  workshop.angular:
+    image: ${DOCKER_REGISTRY-}workshopangular
+    build:
+      context: .
+      dockerfile: workshop-app/Dockerfile
+    depends_on:
+      - workshop.api
+    ports:
+      - '4200:4200'
+    command: sh -c "npm install && npm start"

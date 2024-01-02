@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Workshop.Domain.DTOs;
 using Workshop.Domain.Exceptions;
 using WorkshopMng.Application.Interfaces;
 using WorkshopMng.Application.Services;
@@ -24,7 +25,7 @@ namespace WorkshopMng.API.Controllers
             try
             {
                 await _colaboradorService.InserirColaborador(colaborador);
-                return CreatedAtAction(nameof(_colaboradorService.ObterColaboradorPorId), new { id = colaborador.Id }, colaborador);
+                return CreatedAtAction(nameof(GetColaboradorPorId), new { id = colaborador.Id }, colaborador);
 
             }
             catch (ServiceException serviceExp)
@@ -44,6 +45,23 @@ namespace WorkshopMng.API.Controllers
             {
                 var colaborador = await _colaboradorService.ObterColaboradorPorId(id);
                 return Ok(colaborador);
+            }
+            catch (ServiceException serviceExp)
+            {
+                return NotFound(serviceExp.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        } 
+        [HttpGet("workshops")]
+        public ActionResult<IEnumerable<ColaboradorDTO>> GetColaboradorComWorkshop()
+        {
+            try
+            {
+                var colaboradores = _colaboradorService.ObterColaboradorComWorkshop();
+                return Ok(colaboradores);
             }
             catch (ServiceException serviceExp)
             {

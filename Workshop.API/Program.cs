@@ -19,6 +19,11 @@ builder.Services.AddDbContext<WorkshopContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddCors(p => p.AddPolicy("corsapp", b =>
+{
+    b.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+}));
+
 builder.Services.AddScoped<IAtaService<Ata>, AtaService>();
 builder.Services.AddScoped<IColaboradorService<Colaborador>, ColaboradorService>();
 builder.Services.AddScoped<IWorkshopService<WorkshopMng.Domain.Domains.Workshop>, WorkshopService>();
@@ -32,7 +37,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+app.UseCors("corsapp");
 
 app.UseHttpsRedirection();
 
