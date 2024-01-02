@@ -9,6 +9,8 @@ services:
     command: dotnet run
     ports:
       - '59088:443'
+    expose:
+      - 443
     
   sqlserver:
      image: mcr.microsoft.com/mssql/server:2019-latest
