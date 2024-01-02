@@ -38,7 +38,7 @@ Primeiro nós precisamos executar nossa API e nosso banco de dados SQL Server:
   docker-compose up
 ```
 
-- Abra outro terminal e execute cada um dos 3 comando e um de cada vez:
+- Abra outro terminal e execute cada um dos 3 comandos e um de cada vez:
   ```
   cd workshop-app
   npm install
