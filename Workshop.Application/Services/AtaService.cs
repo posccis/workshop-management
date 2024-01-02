@@ -1,6 +1,7 @@
 ﻿
 using Azure.Core;
 using Microsoft.EntityFrameworkCore;
+using Workshop.Domain.DTOs;
 using Workshop.Domain.Exceptions;
 using WorkshopMng.Application.Interfaces;
 using WorkshopMng.Domain.Domains;
@@ -44,7 +45,7 @@ namespace WorkshopMng.Application.Services
         {
             try
             {
-                var ata = await _dbContext.Atas.FindAsync(id);
+                var ata = await _dbContext.Atas.Include(a => a.Workshop).Include(a => a.colaboradores).FirstAsync(a => a.Id == id);
                 ValidaAtaRetornada(ata);
                 return ata;
             }
@@ -87,11 +88,46 @@ namespace WorkshopMng.Application.Services
 
         public IEnumerable<Ata> ObterTodasAtas()
         {
-            foreach (Ata ata in _dbContext.Atas.Include(a => a.colaboradores))
+            foreach (Ata ata in _dbContext.Atas.Include(a => a.colaboradores).Include(a => a.Workshop))
             {
                 yield return ata;
             }
         }
+
+        public IEnumerable<Ata> FiltrarAtas(FiltroAtaDTO filtro)
+        {
+            try
+            {
+                var atas = _dbContext.Atas.Include(a => a.Workshop).Include(a => a.colaboradores).AsQueryable<Ata>();
+                if (filtro.DataRealizacao.HasValue)
+                {
+                    atas = atas.Where(a => a.Workshop.DataRealizacao.Date == filtro.DataRealizacao.Value.Date);
+                }
+                if (!String.IsNullOrEmpty(filtro.NomeColaborador))
+                {
+                    atas = atas.Where(a => a.colaboradores.Any(c => c.Nome.Contains(filtro.NomeColaborador)));
+
+                }
+                if (!String.IsNullOrEmpty(filtro.NomeWorkshop))
+                {
+                    atas = atas.Where(a => a.Workshop.Nome == filtro.NomeWorkshop);
+                }
+                if (!atas.Any()) throw new ServiceException("Não foi possivel localizar nenhuma ata a partir dos dados informados.");
+
+                return atas.ToList();
+            }
+            catch (ServiceException serviceExp)
+            {
+                throw;
+            }
+            catch (Exception exp)
+            {
+
+                throw new ServiceException("Um erro ocorreu durante a inserção do colaborador na ata:\n" + exp.Message);
+            }
+        }
+
+
 
         public IEnumerable<Colaborador> RetornaColaboradoresPorWorkshop(string workshopNome)
         {
@@ -106,7 +142,7 @@ namespace WorkshopMng.Application.Services
         public Dictionary<string, int> ObterQuantidadeDeWorkshopPorColaborador()
         {
             Dictionary<string, int> dicionario = new Dictionary<string, int>();
-            foreach(Colaborador colaborador in _dbContext.Colaboradores)
+            foreach(Colaborador colaborador in _dbContext.Colaboradores.ToList())
             {
                 var quantidade = _dbContext.Atas.Include(a => a.Workshop)
                     .Count(a => a.colaboradores
@@ -122,7 +158,7 @@ namespace WorkshopMng.Application.Services
 
             Dictionary<string, int> dicionario = new Dictionary<string, int>();
 
-            dicionario = _dbContext.Atas.ToDictionary(x => x.Workshop.Nome, x => x.colaboradores.Count());
+            dicionario = _dbContext.Atas.Include(a => a.Workshop).Include(a => a.colaboradores).ToDictionary(x => x.Workshop.Nome, x => x.colaboradores.Count());
 
             return dicionario;
         }
@@ -160,5 +196,7 @@ namespace WorkshopMng.Application.Services
         {
             if (ata == null) throw new ServiceException("Ata não encontrada. Não foi possivel encontrar nenhum Ata com o Id informado.");
         }
+
+
     }
 }

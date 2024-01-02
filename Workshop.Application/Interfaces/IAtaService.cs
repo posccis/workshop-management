@@ -1,6 +1,7 @@
 ﻿
 
 using System.Collections.Generic;
+using Workshop.Domain.DTOs;
 using WorkshopMng.Domain.Domains;
 
 namespace WorkshopMng.Application.Interfaces
@@ -12,6 +13,9 @@ namespace WorkshopMng.Application.Interfaces
         IEnumerable<T> ObterTodasAtas();
         Task<T> ObterAtaPorId(int id);
         IEnumerable<Colaborador> RetornaColaboradoresPorWorkshop(string workshopNome);
+        IEnumerable<T> FiltrarAtas(FiltroAtaDTO filtro);
+        Dictionary<string, int> ObterQuantidadeDeWorkshopPorColaborador();
+        Dictionary<string, int> ObterQuantidadeDeColaboradorPorWorkshop();
         Task AlterarAta(T ata);
         Task RemoverAta(int id);
         Task RemoverColaboradorDaAta(Colaborador colaborador, int ataId);

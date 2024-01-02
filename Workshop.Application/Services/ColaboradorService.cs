@@ -1,5 +1,8 @@
 ﻿
 using Azure.Core;
+using Microsoft.EntityFrameworkCore;
+using System.Collections;
+using Workshop.Domain.DTOs;
 using Workshop.Domain.Exceptions;
 using WorkshopMng.Application.Interfaces;
 using WorkshopMng.Domain.Domains;
@@ -61,6 +64,46 @@ namespace WorkshopMng.Application.Services
             {
 
                 throw exp;
+            }
+        }
+
+        public IEnumerable<ColaboradorDTO> ObterColaboradorComWorkshop()
+        {
+
+            var colaboradores = _dbContext.Colaboradores.OrderBy(c => c.Nome).ToList();
+            if (!colaboradores.Any()) throw new ServiceException("Não há colaboradores cadastrados para serem retornados.");
+            foreach (Colaborador colaborador in colaboradores)
+            {
+                ColaboradorDTO colaboradorDTO = new ColaboradorDTO();
+                try
+                {
+                    List<Domain.Domains.Workshop> lista = _dbContext.Atas
+                    .Where(a => a.colaboradores.Any(c => c.Nome == colaborador.Nome))
+                    .Select(ata => new Domain.Domains.Workshop
+                    {
+                        Id = ata.Workshop.Id,
+                        Nome = ata.Workshop.Nome,
+                        DataRealizacao = ata.Workshop.DataRealizacao,
+                        Descricao = ata.Workshop.Descricao,
+                    })
+                    .ToList();
+                    colaboradorDTO = new ColaboradorDTO()
+                    {
+                        Nome = colaborador.Nome,
+                        Workshops = lista
+                    };
+                }
+                catch (ServiceException serviceExp)
+                {
+                    throw serviceExp;
+                }
+                catch (Exception exp)
+                {
+
+                    throw exp;
+                }
+
+                yield return colaboradorDTO;
             }
         }
 

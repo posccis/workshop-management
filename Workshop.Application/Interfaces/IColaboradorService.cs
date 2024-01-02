@@ -1,5 +1,6 @@
 ﻿
 
+using Workshop.Domain.DTOs;
 using WorkshopMng.Domain.Domains;
 
 namespace WorkshopMng.Application.Interfaces
@@ -8,6 +9,7 @@ namespace WorkshopMng.Application.Interfaces
     {
         Task InserirColaborador(T colaborador);
         IEnumerable<T> ObterTodosColaboradores();
+        IEnumerable<ColaboradorDTO> ObterColaboradorComWorkshop();
         Task<T> ObterColaboradorPorId(int id);
         Task AlterarColaborador(T colaborador);
         Task RemoverColaborador(int id);
