@@ -2,89 +2,69 @@
     <h4 class="card-title m-b-0 text-light">Atas</h4>
 </div>
 
-<div class="row d-flex justify-content-center" style="padding-left: 0% !important;">
+<div class="row text-center mt-3">
+    <h3>Bem vindo ao gerenciamento de Workshops da Fast!</h3>
+    <h5>Na página de atas será possivel visualizar a lista contendo as atas de todos os workshops além de filtrar entre elas.</h5>
+</div>
 
-    <div class="col-lg-6">  
-       <div class="card">
-        <div class="row" style="margin-top: 2%;justify-content: space-between;margin-right: 0% !important;">
-            <div class="col-4">
-                <p> 1000 Atas encontradas</p>
-            </div>
-            <div class="col-4 text-end">
-                <i class="bi bi-search"></i>
+<div class="row d-flex justify-content-center mt-3" style="padding-left: 0% !important;">
+
+    <div class="col-lg-6">
+        <div class="card">
+
+            <div class="row pt-2">
+                <form #valor="ngForm" (ngSubmit)="filtraAtas(valor)" class="row">
+                    <div class="col-4">
+                        <label class="form-label" for="colaboradorInput">Colaborador</label>
+                        <input id="colaboradorInput" class="form-control" name="colaboradorNome" ngModel>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label" for="workshopInput">Workshop</label>
+                        <input id="workshopInput" class="form-control" type="text" name="workshopNome" ngModel>
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label" for="dataInput">Data</label>
+                        <input id="dataInput" class="form-control" type="date" name="dataSelecionada" ngModel>
+                    </div>
+                    <div class="col-1 d-flex align-items-center justify-content-center" style="padding-top: 4vh">
+                        <button id="btnFiltrar" class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                    </div>
+                </form>
+
             </div>
 
-        
+            <div class="row" style="margin-top: 2%;justify-content: space-between;margin-right: 0% !important;">
+                <div class="col-4">
+                    <p> {{numeroDeAtas}} Atas encontradas</p>
+                </div>
+
+            </div>
+            <ul class="list-style-none">
+                @for (ata of atasList; track ata.id){
+                <li class="d-flex no-block card-body justify-content-between" style="border-bottom: 0.5px solid black !important;">
+
+                    <!-- <i class="fa fa-check-circle w-30px m-t-5"></i> -->
+                    <div style="display: flex;flex-direction: column;">
+                        <a href="#" class="m-b-0 font-medium p-0" data-abc="true">{{ata.workshop.nome}}</a>
+                        <span class="text-muted">{{ata.workshop.descricao}} </span>
+                        <small class="no-inline listaBtn"><a (click)="toggleMostrarColaboradores(ata.id)">Lista de colaboradores</a></small>
+                        <ol *ngIf="isMostrarColaboradores(ata.id)">
+                            <li *ngFor="let colaborador of ata.colaboradores"> - {{colaborador.nome}}</li>
+                        </ol>
+                    </div>
+                    <div class="ml-auto">
+                        <div class="tetx-right">
+                            <h5 class="text-muted m-b-0 text-center">
+                                {{retornaDia(ata.workshop.dataRealizacao.toString())}}</h5>
+                            <span
+                                class="text-muted font-16">{{retornaMes(ata.workshop.dataRealizacao.toString())}}</span>
+                        </div>
+                    </div>
+                </li>
+                }
+
+            </ul>
         </div>
-           <ul class="list-style-none">
-               <li class="d-flex no-block card-body justify-content-between">
-                   <!-- <i class="fa fa-check-circle w-30px m-t-5"></i> -->
-                   <div>
-                       <a href="#" class="m-b-0 font-medium p-0" data-abc="true">Version 2.5 released</a>
-                       <span class="text-muted">A new version 2.5 has been released. </span>
-                   </div>
-                   <div class="ml-auto">
-                       <div class="tetx-right">
-                           <h5 class="text-muted m-b-0 text-center">26</h5>
-                           <span class="text-muted font-16">FEB</span>
-                       </div>
-                   </div>
-               </li>
-               <li class="d-flex no-block card-body border-top justify-content-between">
-                   <!-- <i class="fa fa-gift w-30px m-t-5"></i> -->
-                   <div>
-                       <a href="#" class="m-b-0 font-medium p-0" data-abc="true">Congratulation to AAA For new investment</a>
-                       <span class="text-muted">AAA has invested $2M in MMM. we are happy to working forward with AAA.</span>
-                   </div>
-                   <div class="ml-auto">
-                       <div class="tetx-right">
-                           <h5 class="text-muted m-b-0 text-center">11</h5>
-                           <span class="text-muted font-16">MAR</span>
-                       </div>
-                   </div>
-               </li>
-               <li class="d-flex no-block card-body border-top justify-content-between">
-                   <!-- <i class="fa fa-plus w-30px m-t-5"></i> -->
-                   <div>
-                       <a href="#" class="m-b-0 font-medium p-0" data-abc="true">Hiring Android Developers</a>
-                       <span class="text-muted">We are hiring android developers to expend our mobile development team.</span>
-                   </div>
-                   <div class="ml-auto">
-                       <div class="tetx-right">
-                           <h5 class="text-muted m-b-0 text-center">19</h5>
-                           <span class="text-muted font-16">APR</span>
-                       </div>
-                   </div>
-               </li>
-               <li class="d-flex no-block card-body border-top justify-content-between">
-                   <!-- <i class="fa fa-leaf w-30px m-t-5"></i> -->
-                   <div>
-                       <a href="#" class="m-b-0 font-medium p-0" data-abc="true">Anounced New CEO</a>
-                       <span class="text-muted">We announced John kendey as new CEO of the company.</span>
-                   </div>
-                   <div class="ml-auto">
-                       <div class="tetx-right">
-                           <h5 class="text-muted m-b-0 text-center">20</h5>
-                           <span class="text-muted font-16">JUN</span>
-                       </div>
-                   </div>
-               </li>
-               <li class="d-flex no-block card-body border-top justify-content-between">
-                   <!-- <i class="fa fa-question-circle w-30px m-t-5"></i> -->
-                   <div>
-                       <a href="#" class="m-b-0 font-medium p-0" data-abc="true">New Guidelines to Employees</a>
-                       <span class="text-muted">We have realeased new guidelines to all employees</span>
-                   </div>
-                   <div class="ml-auto">
-                       <div class="tetx-right">
-                           <h5 class="text-muted m-b-0 text-center">15</h5>
-                           <span class="text-muted font-16">AUG</span>
-                       </div>
-                   </div>
-               </li>
-           </ul>
-       </div>
 
-   </div>
-   </div>
-   
+    </div>
+</div>
