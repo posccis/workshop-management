@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgChartsModule } from 'ng2-charts';
 
 @Component({
@@ -11,10 +11,8 @@ import { NgChartsModule } from 'ng2-charts';
   styleUrl: './barplot.component.css'
 })
 export class BarplotComponent {
-  public lineChartData: Array<any> = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-  ];
-  public lineChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  @Input() chartData: Array<any> = [];
+  @Input() chartLabels: Array<any> = [];
   public lineChartOptions: any = {
     responsive: true,
   };
