@@ -18,13 +18,4 @@ services:
         - '11433:1433'
      expose:
         - 1433 
-  workshop.angular:
-    image: ${DOCKER_REGISTRY-}workshopangular
-    build:
-      context: .
-      dockerfile: workshop-app/Dockerfile
-    depends_on:
-      - workshop.api
-    ports:
-      - '4200:4200'
-    command: sh -c "npm install && npm start"
+
